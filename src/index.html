@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <link href="index.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="index.js"></script>
+    <title>Get Image coordinates</title>
+  </head>
+  <body>
+    <form name="pointform" method="post">
+      <div id="images" style="display: flex; flex-direction:row;">
+        <a id="hidden"></a>
+        <script language="JavaScript" type="text/javascript">
+          // var imgs = ["url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
+          // "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')"];
+          //generate_images(imgs)
+        </script>
+      </div>
+    </form>
+
+    <div><a onclick="clear_marks()" class="next">Clear</a></div>
+    <div>
+      <script language="JavaScript" type="text/javascript">
+        let i = -1
+        var pics = [
+          [
+            "url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
+            "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')",
+          ],
+          [
+            "url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
+            "url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
+          ],
+          [
+            "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')",
+            "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')",
+          ],
+        ]
+        console.log(
+          url_exists("url('data/01KEAX20150801_112031_V06_Reflectivity.png')"),
+        )
+        function next_refresh() {
+          if (i < pics.length) {
+            i++
+          }
+          console.log('NEXT:')
+          console.log(i)
+          refresh_page(pics[i])
+        }
+        function prev_refresh() {
+          if (i > 0) {
+            i--
+          }
+          console.log('PREVIOUS:')
+          console.log(i)
+          refresh_page(pics[i])
+        }
+      </script>
+      <a onclick="prev_refresh()" class="previous">&#8249; Previous</a>
+      <a onclick="next_refresh()" class="next">Next &#8250;</a>
+    </div>
+  </body>
+</html>
