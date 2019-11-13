@@ -52,7 +52,6 @@ function refresh_page(imgs){
   // var imgs = ["url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
   //             "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')"];
   
-  console.log(imgs);
   let prev_markers = document.getElementsByClassName("marker");
   while(prev_markers.length > 0){
     prev_markers[0].parentNode.removeChild(prev_markers[0]);
@@ -73,18 +72,20 @@ function generate_images(imgs){
   // }) 
 
   // loop through the images 
-  for (i = 0; i < imgs.length; i++) {
-    // and create a new image on the page for each one
-    let image = document.createElement('div');
-    image.setAttribute('class', 'image');
-    image.setAttribute('onclick', 'mark(event)');
-    image.style.backgroundImage = imgs[i];
-    //console.log(imgs[i])
-    image.style.backgroundRepeat = 'no-repeat';
-    image.style.width = '250px';
-    image.style.height = '250px';
-    image.style.marginRight = '20px';
+  if(imgs != undefined){
+    for (j = 0; j < imgs.length; j++) {
+      // and create a new image on the page for each one
+      let image = document.createElement('div');
+      image.setAttribute('class', 'image');
+      image.setAttribute('onclick', 'mark(event)');
+      image.style.backgroundImage = imgs[j];
+      //console.log(imgs[i])
+      image.style.backgroundRepeat = 'no-repeat';
+      image.style.width = '250px';
+      image.style.height = '250px';
+      image.style.marginRight = '20px';
 
-    document.getElementById("images").append(image);
+      document.getElementById("images").append(image);
+    }
   }
 }

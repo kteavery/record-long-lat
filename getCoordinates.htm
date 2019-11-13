@@ -21,8 +21,8 @@
     <div><a onclick="clear_marks()" class="next">Clear</a></div>
     <div>
         <script language="JavaScript" type="text/javascript">
-            let i = 0;
-            var imgs = [
+            let i = -1;
+            var pics = [
                 ["url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
                 "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')"],
                 ["url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
@@ -31,24 +31,20 @@
                 "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')"]
             ];
             function next_refresh(){
-                console.log(imgs[i]);
-                console.log(imgs.length);
-                console.log(i);
-                refresh_page(imgs[i]);
-                if (i < imgs.length){
-                   i++;
-                   console.log(i);               
+                if (i < pics.length){
+                    i++;              
                 }
+                console.log("NEXT:");
+                console.log(i);
+                refresh_page(pics[i]);
             }
             function prev_refresh(){
-                console.log(imgs[i]);
-                console.log(imgs.length);
-                console.log(i);
-                refresh_page(imgs[i]);
                 if (i > 0){
                     i--;
-                    console.log(i);
                 }
+                console.log("PREVIOUS:");
+                console.log(i);
+                refresh_page(pics[i]);
             }
         </script>
         <a onclick="prev_refresh()" class="previous">&#8249; Previous</a>
