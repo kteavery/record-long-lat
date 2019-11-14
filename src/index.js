@@ -1,4 +1,49 @@
-//import { fs } from './system/fs'
+import fs from './system/fs'
+
+let next = document.getElementById('next-button')
+next.onclick = next_refresh()
+
+let prev = document.getElementById('prev-button')
+prev.onclick = prev_refresh()
+
+let clear = document.getElementById('clear-button')
+clear.onclick = clear_marks()
+
+// console.log(
+//   url_exists("url('data/01KEAX20150801_112031_V06_Reflectivity.png')"),
+// )
+let i = -1
+var pics = [
+  [
+    "url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
+    "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')",
+  ],
+  [
+    "url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
+    "url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
+  ],
+  [
+    "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')",
+    "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')",
+  ],
+]
+
+function next_refresh() {
+  if (i < pics.length) {
+    i++
+  }
+  console.log('NEXT:')
+  console.log(i)
+  refresh_page(pics[i])
+}
+function prev_refresh() {
+  if (i > 0) {
+    i--
+  }
+  console.log('PREVIOUS:')
+  console.log(i)
+  refresh_page(pics[i])
+}
 
 function mark(event) {
   //get the position
@@ -16,14 +61,14 @@ function mark(event) {
   document.pointform.append(marker)
 
   //const fs = require('fs')
-  //let data = [event.pageX, event.pageY];
+  let data = [event.pageX, event.pageY]
 
-  // fs.appendFile('output.csv', data, (err) => {
-  //   if (err) throw err;
-  // })
+  fs.appendFile('output.csv', data, err => {
+    if (err) throw err
+  })
 
   //write to csv
-  let data = [[event.pageX, event.pageY]]
+  //let data = [[event.pageX, event.pageY]]
   console.log(data)
 
   var csv = 'x,y\n'

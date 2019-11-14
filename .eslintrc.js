@@ -30,8 +30,21 @@ module.exports = {
       env: {
         node: true,
         es6: true,
+        browser: true,
       },
       extends: ['eslint:recommended', 'prettier'],
+      rules: {
+        'no-undef': 'off',
+        'no-unused-vars': 'off',
+      },
+      parserOptions: {
+        project: './tsconfig.json',
+        ecmaFeatures: {
+          jsx: true,
+          modules: true,
+        },
+        sourceType: 'module',
+      },
     },
   ],
 }
