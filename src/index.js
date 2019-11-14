@@ -1,13 +1,13 @@
 import fs from './system/fs'
 
 let next = document.getElementById('next-button')
-next.onclick = next_refresh()
+next.onclick = next_refresh
 
 let prev = document.getElementById('prev-button')
-prev.onclick = prev_refresh()
+prev.onclick = prev_refresh
 
 let clear = document.getElementById('clear-button')
-clear.onclick = clear_marks()
+clear.onclick = clear_marks
 
 // console.log(
 //   url_exists("url('data/01KEAX20150801_112031_V06_Reflectivity.png')"),
@@ -49,14 +49,14 @@ function mark(event) {
   //get the position
   let pos_x = event.offsetX ? event.offsetX : event.pageX
   let pos_y = event.offsetY ? event.offsetY : event.pageY
-  event.pageX.value = pos_x
-  event.pageY.value = pos_y
+  // event.pageX.value = pos_x
+  // event.pageY.value = pos_y
 
   //create and add a new marker
   let marker = document.createElement('div')
   marker.setAttribute('class', 'marker')
-  marker.style.top = event.pageY - 5 + 'px'
-  marker.style.left = event.pageX - 5 + 'px'
+  marker.style.top = pos_y + 'px'
+  marker.style.left = pos_x + 'px'
 
   document.pointform.append(marker)
 
@@ -83,7 +83,7 @@ function mark(event) {
   hiddenElement.download = 'data.csv'
   hiddenElement.click()
 
-  return event.pageX, event.pageY
+  return [event.pageX, event.pageY]
 }
 
 function clear_marks() {
@@ -122,7 +122,8 @@ function generate_images(imgs) {
       // and create a new image on the page for each one
       let image = document.createElement('div')
       image.setAttribute('class', 'image')
-      image.setAttribute('onclick', 'mark(event)')
+      //image.setAttribute('onclick', 'mark(event)')
+      image.onclick = mark
       image.style.backgroundImage = imgs[j]
       //console.log(imgs[i])
       image.style.backgroundRepeat = 'no-repeat'
