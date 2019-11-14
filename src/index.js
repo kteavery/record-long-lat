@@ -1,4 +1,8 @@
-import fs from './system/fs'
+import { fs } from './system/fs'
+
+fs.writeFile('output.csv', 'x,y\n', err => {
+  if (err) throw err
+})
 
 let next = document.getElementById('next-button')
 next.onclick = next_refresh
@@ -9,24 +13,47 @@ prev.onclick = prev_refresh
 let clear = document.getElementById('clear-button')
 clear.onclick = clear_marks
 
-// console.log(
-//   url_exists("url('data/01KEAX20150801_112031_V06_Reflectivity.png')"),
-// )
+var pics = []
 let i = -1
-var pics = [
-  [
-    "url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
-    "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')",
-  ],
-  [
-    "url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
-    "url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
-  ],
-  [
-    "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')",
-    "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')",
-  ],
-]
+
+// console.log(fs.readdirSync('Users'))
+var path = require('path')
+console.log(__dirname)
+get_directories('/Users/Kate/workspace/record-long-lat/data', content => {
+  console.log(content)
+})
+
+// fs.readdirSync(
+//   '\\Users\\Kate\\workspace\\record-long-lat\\data',
+//   (err, dir) => {
+//     console.log(dir)
+//     for (let filePath of dir) {
+//       console.log(filePath)
+//     }
+//   },
+// )
+
+// fs.readdirSync('file:///Users/Kate/workspace/record-long-lat/data').forEach(
+//   file => {
+//     console.log(file)
+//     pics.append([file])
+//   },
+// )
+
+// var pics = [
+//   [
+//     "url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
+//     "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')",
+//   ],
+//   [
+//     "url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
+//     "url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
+//   ],
+//   [
+//     "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')",
+//     "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')",
+//   ],
+// ]
 
 function next_refresh() {
   if (i < pics.length) {
@@ -36,6 +63,7 @@ function next_refresh() {
   console.log(i)
   refresh_page(pics[i])
 }
+
 function prev_refresh() {
   if (i > 0) {
     i--
@@ -45,43 +73,32 @@ function prev_refresh() {
   refresh_page(pics[i])
 }
 
+function get_directories(path, callback) {
+  fs.readdir(path, function(content) {
+    callback(content)
+  })
+}
+
 function mark(event) {
   //get the position
   let pos_x = event.offsetX ? event.offsetX : event.pageX
   let pos_y = event.offsetY ? event.offsetY : event.pageY
-  // event.pageX.value = pos_x
-  // event.pageY.value = pos_y
 
   //create and add a new marker
-  let marker = document.createElement('div')
+  let marker = document.createElement('p')
   marker.setAttribute('class', 'marker')
-  marker.style.top = pos_y + 'px'
-  marker.style.left = pos_x + 'px'
+  let text = document.createTextNode(pos_x + ', ' + pos_y)
+  marker.appendChild(text)
 
   document.pointform.append(marker)
 
-  //const fs = require('fs')
-  let data = [event.pageX, event.pageY]
+  // write to csv
+  let data = [pos_x, pos_y]
 
-  fs.appendFile('output.csv', data, err => {
+  fs.appendFile('output.csv', data + '\n', err => {
     if (err) throw err
   })
-
-  //write to csv
-  //let data = [[event.pageX, event.pageY]]
   console.log(data)
-
-  var csv = 'x,y\n'
-  data.forEach(function(row) {
-    csv += row.join(',')
-    csv += '\n'
-  })
-
-  var hiddenElement = document.getElementById('hidden')
-  hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv)
-  hiddenElement.target = '_blank'
-  hiddenElement.download = 'data.csv'
-  hiddenElement.click()
 
   return [event.pageX, event.pageY]
 }
@@ -95,9 +112,6 @@ function clear_marks() {
 }
 
 function refresh_page(imgs) {
-  // var imgs = ["url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
-  //             "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')"];
-
   let prev_markers = document.getElementsByClassName('marker')
   while (prev_markers.length > 0) {
     prev_markers[0].parentNode.removeChild(prev_markers[0])
@@ -111,11 +125,6 @@ function refresh_page(imgs) {
 }
 
 function generate_images(imgs) {
-  // let data = "x,y\n";
-  // fs.writeFile('output.csv', data, (err) => {
-  //   if (err) throw err;
-  // })
-
   // loop through the images
   if (imgs != undefined) {
     for (let j = 0; j < imgs.length; j++) {
@@ -135,8 +144,6 @@ function generate_images(imgs) {
     }
   }
 }
-
-function url_exists(url) {}
 
 function retrieve_images() {
   let image_list = []
