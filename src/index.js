@@ -16,29 +16,20 @@ clear.onclick = clear_marks
 var pics = []
 let i = -1
 
-// console.log(fs.readdirSync('Users'))
-var path = require('path')
-console.log(__dirname)
-get_directories('/Users/Kate/workspace/record-long-lat/data', content => {
-  console.log(content)
-})
-
-// fs.readdirSync(
-//   '\\Users\\Kate\\workspace\\record-long-lat\\data',
-//   (err, dir) => {
-//     console.log(dir)
-//     for (let filePath of dir) {
-//       console.log(filePath)
-//     }
-//   },
-// )
-
-// fs.readdirSync('file:///Users/Kate/workspace/record-long-lat/data').forEach(
-//   file => {
-//     console.log(file)
-//     pics.append([file])
-//   },
-// )
+fields = []
+fs.readdir(
+  '/Users/Kate/workspace/record-long-lat/data/Roost_Reflectivity',
+).then(result => fields.append(result))
+fs.readdir('/Users/Kate/workspace/record-long-lat/data/Roost_Velocity').then(
+  result => fields.append(result),
+)
+fs.readdir('/Users/Kate/workspace/record-long-lat/data/Roost_Rho_HV').then(
+  result => fields.append(result),
+)
+fs.readdir('/Users/Kate/workspace/record-long-lat/data/Roost_Zdr').then(
+  result => fields.append(result),
+)
+pics.append(fields)
 
 // var pics = [
 //   [
@@ -73,11 +64,11 @@ function prev_refresh() {
   refresh_page(pics[i])
 }
 
-function get_directories(path, callback) {
-  fs.readdir(path, function(content) {
-    callback(content)
-  })
-}
+// function get_directories(path, callback) {
+//   fs.readdir(path, function(content) {
+//     callback(content)
+//   })
+// }
 
 function mark(event) {
   //get the position
