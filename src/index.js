@@ -1,8 +1,9 @@
 import { fs } from './system/fs'
+import { clear_marks, refresh_page, tab, flag_image } from './record_long_lat'
 
 const path = require('path')
 
-let flag_bool = false
+tab()
 
 fs.writeFile('output.csv', 'x,y\n', err => {
   if (err) throw err
@@ -72,14 +73,6 @@ for (let k = 0; k < aws_names.length; k++) {
 
 function read_directories() {}
 
-function flag_image() {
-  if (flag_bool == false) {
-    flag_bool = true
-  } else {
-    flag_bool = false
-  }
-}
-
 function next_refresh() {
   if (i < pics.length) {
     i++
@@ -96,70 +89,6 @@ function prev_refresh() {
   console.log('PREVIOUS:')
   console.log(i)
   refresh_page(pics[i])
-}
-
-function mark(event) {
-  //get the position
-  let pos_x = event.offsetX ? event.offsetX : event.pageX
-  let pos_y = event.offsetY ? event.offsetY : event.pageY
-
-  //create and add a new marker
-  let marker = document.createElement('li')
-  marker.setAttribute('class', 'marker')
-  let text = document.createTextNode(pos_x + ', ' + pos_y + ', ' + flag_bool)
-  marker.appendChild(text)
-  document.getElementById('mark-list').appendChild(marker)
-
-  // write to csv
-  let data = [pos_x, pos_y]
-
-  fs.appendFile('output.csv', data + '\n', err => {
-    if (err) throw err
-  })
-  console.log(data)
-
-  return [pos_x, pos_y]
-}
-
-function clear_marks() {
-  //remove previous markers
-  let prev_markers = document.getElementsByClassName('marker')
-  while (prev_markers.length > 0) {
-    prev_markers[0].parentNode.removeChild(prev_markers[0])
-  }
-}
-
-function refresh_page(imgs) {
-  let prev_markers = document.getElementsByClassName('marker')
-  while (prev_markers.length > 0) {
-    prev_markers[0].parentNode.removeChild(prev_markers[0])
-  }
-  let prev_images = document.getElementsByClassName('image')
-  while (prev_images.length > 0) {
-    prev_images[0].parentNode.removeChild(prev_images[0])
-  }
-
-  generate_images(imgs)
-}
-
-function generate_images(imgs) {
-  // loop through the images
-  if (imgs != undefined) {
-    for (let j = 0; j < imgs.length; j++) {
-      // and create a new image on the page for each one
-      let image = document.createElement('img')
-      image.setAttribute('class', 'image')
-      image.onclick = mark
-      image.src = imgs[j]
-      //image.style.backgroundImage = imgs[j]
-      image.style.backgroundRepeat = 'no-repeat'
-      image.style.width = '250px'
-      image.style.height = '250px'
-      image.style.marginRight = '20px'
-
-      document.getElementById('images').append(image)
-    }
-  }
 }
 
 function retrieve_images() {
