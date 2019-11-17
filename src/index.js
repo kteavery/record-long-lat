@@ -1,9 +1,22 @@
 import { fs } from './system/fs'
-import { clear_marks, refresh_page, tab, flag_image } from './record_long_lat'
+import { remote } from './system/remote'
+import { clear_marks, refresh_page, flag_image } from './record_long_lat'
 
-const path = require('path')
+import 'regenerator-runtime'
 
 tab()
+
+// var input = document.createElement('input')
+// input.type = 'file'
+// var selected_file
+
+// input.onchange = e => {
+//   selected_file = e.target.files[0]
+// }
+// input.click()
+// console.log(selected_file.name)
+// const { dialog } = require('electron')
+// console.log(dialog.showOpenDialog({ properties: ['openFile'] }))
 
 fs.writeFile('output.csv', 'x,y\n', err => {
   if (err) throw err
@@ -21,57 +34,55 @@ clear.onclick = clear_marks
 let flag = document.getElementById('flag-button')
 flag.onclick = flag_image
 
-var pics = []
+const pics = []
+readAWSFiles()
+console.log(pics)
 let i = -1
 
-let aws_names = []
-fs.readFile('/Users/Kate/workspace/record-long-lat/aws_names.csv').then(
-  result => aws_names.push(result),
-)
-console.log('AWS')
-console.log(aws_names)
+async function readAWSFiles() {
+  const aws_names = (await fs.readFile(
+    remote.process.cwd() + '/aws_names.csv',
+    'utf8',
+  )).split(/\r?\n/)
+  console.log(aws_names)
 
-for (let k = 0; k < aws_names.length; k++) {
-  let fields = []
-  fs.readFile(
-    '/Users/Kate/workspace/record-long-lat/data/Roost_Reflectivity/' +
-      aws_names[k] +
-      '_Reflectivity.png',
-  ).then(result => fields.push(result))
-  fs.readFile(
-    '/Users/Kate/workspace/record-long-lat/data/Roost_Velocity/' +
-      aws_names[k] +
-      '_Velocity.png',
-  ).then(result => fields.push(result))
-  fs.readFile(
-    '/Users/Kate/workspace/record-long-lat/data/Roost_Rho_HV/' +
-      aws_names[k] +
-      '_Rho_HV',
-  ).then(result => fields.push(result))
-  fs.readFile(
-    '/Users/Kate/workspace/record-long-lat/data/Roost_Zdr/' +
-      aws_names[k] +
-      '_Zdr',
-  ).then(result => fields.push(result))
-  pics.push(fields)
+  for (let k = 0; k < aws_names.length; k++) {
+    const fields = []
+
+    await add_file_name('Reflectivity', aws_names, k, fields)
+    await add_file_name('Velocity', aws_names, k, fields)
+    await add_file_name('Rho_HV', aws_names, k, fields)
+    await add_file_name('Zdr', aws_names, k, fields)
+
+    if (fields.length > 0) {
+      pics.push(fields)
+    }
+  }
+  console.log('pics')
+  console.log(pics)
 }
 
-// var pics = [
-//   [
-//     "url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
-//     "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')",
-//   ],
-//   [
-//     "url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
-//     "url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
-//   ],
-//   [
-//     "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')",
-//     "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')",
-//   ],
-// ]
-
-function read_directories() {}
+async function add_file_name(fieldname, aws_names, k, fields) {
+  let day = aws_names[k].substring(10, 12)
+  let k_name =
+    remote.process.cwd() +
+    '/data/Roost_' +
+    fieldname +
+    '/' +
+    day +
+    aws_names[k] +
+    '_' +
+    fieldname +
+    '.png'
+  try {
+    await fs.access(k_name)
+    fields.push(k_name)
+  } catch (e) {
+    if (e.code != 'ENOENT') {
+      throw e
+    }
+  }
+}
 
 function next_refresh() {
   if (i < pics.length) {
@@ -86,16 +97,16 @@ function prev_refresh() {
   if (i > 0) {
     i--
   }
+  console.log(pics[i])
   console.log('PREVIOUS:')
   console.log(i)
   refresh_page(pics[i])
 }
 
-function retrieve_images() {
-  let image_list = []
-  //get file list
-  filestems.forEach(function(filestem) {
-    filestem + ''
-  })
-  return image_list
+function tab() {
+  document.onkeyup = function(e) {
+    if (e.which == 9) {
+      next_refresh()
+    }
+  }
 }

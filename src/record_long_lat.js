@@ -1,3 +1,5 @@
+import { fs } from './system/fs'
+
 let flag_bool = false
 
 export function flag_image() {
@@ -68,14 +70,6 @@ export function generate_images(imgs) {
       image.style.marginRight = '20px'
 
       document.getElementById('images').append(image)
-    }
-  }
-}
-
-export function tab() {
-  document.onkeyup = function(e) {
-    if (e.which == 9) {
-      next_refresh()
     }
   }
 }
