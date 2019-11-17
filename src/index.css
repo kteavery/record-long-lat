@@ -13,17 +13,19 @@ a:hover {
 .previous {
   background-color: #f1f1f1;
   color: black;
+  font-size: 16px;
+  font-family: sans-serif;
+  padding: 10px 16px;
 }
 
 .next {
   background-color: #4caf50;
   color: white;
+  font-size: 16px;
+  font-family: sans-serif;
+  padding: 10px 16px;
 }
 
 .round {
   border-radius: 50%;
-}
-
-.marker {
-  position: absolute;
 }

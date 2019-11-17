@@ -4,27 +4,10 @@ import { clear_marks, refresh_page, flag_image } from './record_long_lat'
 
 import 'regenerator-runtime'
 
+export let image_path = ''
+
 tab()
-
-// const electron = require('electron')
-// const dialog = electrong.dialog
-// exports.selectDirectory = function() {
-//   dialog.showOpenDialog(mainWindow, {
-//     properties: ['openDirectory'],
-//   })
-// }
-
-document.getElementById('open-button').addEventListener('click', _ => {
-  document.getElementById('choose-directory').click()
-})
-// console.log(selected_file.value)
-// console.log(selected_file.name)
-// const { dialog } = require('electron')
-// console.log(dialog.showOpenDialog({ properties: ['openFile'] }))
-
-fs.writeFile('output.csv', 'x,y\n', err => {
-  if (err) throw err
-})
+open_directory()
 
 let next = document.getElementById('next-button')
 next.onclick = next_refresh
@@ -39,16 +22,14 @@ let flag = document.getElementById('flag-button')
 flag.onclick = flag_image
 
 const pics = []
-readAWSFiles()
-console.log(pics)
+
 let i = -1
 
 async function readAWSFiles() {
   const aws_names = (await fs.readFile(
     remote.process.cwd() + '/aws_names.csv',
     'utf8',
-  )).split(/\r?\n/)
-  console.log(aws_names)
+  )).split(/\r?,\n/)
 
   for (let k = 0; k < aws_names.length; k++) {
     const fields = []
@@ -62,15 +43,13 @@ async function readAWSFiles() {
       pics.push(fields)
     }
   }
-  console.log('pics')
-  console.log(pics)
 }
 
 async function add_file_name(fieldname, aws_names, k, fields) {
   let day = aws_names[k].substring(10, 12)
   let k_name =
-    remote.process.cwd() +
-    '/data/Roost_' +
+    image_path +
+    '/Roost_' +
     fieldname +
     '/' +
     day +
@@ -78,6 +57,7 @@ async function add_file_name(fieldname, aws_names, k, fields) {
     '_' +
     fieldname +
     '.png'
+
   try {
     await fs.access(k_name)
     fields.push(k_name)
@@ -92,7 +72,7 @@ function next_refresh() {
   if (i < pics.length) {
     i++
   }
-  console.log('NEXT:')
+  console.log('NEXT: page')
   console.log(i)
   refresh_page(pics[i])
 }
@@ -101,8 +81,7 @@ function prev_refresh() {
   if (i > 0) {
     i--
   }
-  console.log(pics[i])
-  console.log('PREVIOUS:')
+  console.log('PREVIOUS: page')
   console.log(i)
   refresh_page(pics[i])
 }
@@ -113,4 +92,21 @@ function tab() {
       next_refresh()
     }
   }
+}
+
+function open_directory() {
+  document.getElementById('open-button').addEventListener('click', _ => {
+    let dir = document.getElementById('choose-directory')
+    dir.click()
+    dir.onchange = selectFolder
+  })
+}
+
+function selectFolder(e) {
+  var theFiles = e.target.files
+  image_path = theFiles[0].path
+  readAWSFiles()
+  fs.writeFile(image_path + '/output.csv', 'x,y,flag\n', err => {
+    if (err) throw err
+  })
 }

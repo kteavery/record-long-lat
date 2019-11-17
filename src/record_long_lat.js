@@ -1,4 +1,5 @@
 import { fs } from './system/fs'
+import { image_path } from './index'
 
 let flag_bool = false
 
@@ -31,9 +32,9 @@ export function mark(event) {
   document.getElementById('mark-list').appendChild(marker)
 
   // write to csv
-  let data = [pos_x, pos_y]
+  let data = [pos_x, pos_y, flag_bool]
 
-  fs.appendFile('output.csv', data + '\n', err => {
+  fs.appendFile(image_path + '/output.csv', data + '\n', err => {
     if (err) throw err
   })
   console.log(data)
@@ -62,12 +63,13 @@ export function generate_images(imgs) {
       let image = document.createElement('img')
       image.setAttribute('class', 'image')
       image.onclick = mark
-      image.src = imgs[j]
-      //image.style.backgroundImage = imgs[j]
+      image.src = `file://${imgs[j]}`
       image.style.backgroundRepeat = 'no-repeat'
-      image.style.width = '250px'
-      image.style.height = '250px'
-      image.style.marginRight = '20px'
+      image.style.minWidth = '450px'
+      image.style.minHeight = '450px'
+      image.style.maxWidth = '450px'
+      image.style.maxHeight = '450px'
+      image.style.objectFit = 'cover'
 
       document.getElementById('images').append(image)
     }

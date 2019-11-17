@@ -5,13 +5,20 @@
     <title>Get Image coordinates</title>
   </head>
   <body>
-    <button id="open-button" class="next">Choose directory</button>
+    <button id="open-button" class="next" margin-bottom="25px">
+      Choose directory
+    </button>
+    <button id="save-button" class="next" margin-bottom="25px">
+      Save CSV
+    </button>
     <input
       id="choose-directory"
       type="file"
       style="display: none"
       webkitdirectory
     />
+    <input id="save-file" type="file" style="display: none" />
+
     <form name="pointform" method="post">
       <div id="images" style="display: flex; flex-direction:row;">
         <a id="hidden"></a>
@@ -26,6 +33,6 @@
       <a id="prev-button" class="previous">&#8249; Previous</a>
       <a id="next-button" class="next">Next &#8250;</a>
     </div>
-    <ul id="mark-list"></ul>
+    <ul id="mark-list" style="list-style-type:none" />
   </body>
 </html>
