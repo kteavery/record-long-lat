@@ -6,14 +6,18 @@ import 'regenerator-runtime'
 
 tab()
 
-// var input = document.createElement('input')
-// input.type = 'file'
-// var selected_file
-
-// input.onchange = e => {
-//   selected_file = e.target.files[0]
+// const electron = require('electron')
+// const dialog = electrong.dialog
+// exports.selectDirectory = function() {
+//   dialog.showOpenDialog(mainWindow, {
+//     properties: ['openDirectory'],
+//   })
 // }
-// input.click()
+
+document.getElementById('open-button').addEventListener('click', _ => {
+  document.getElementById('choose-directory').click()
+})
+// console.log(selected_file.value)
 // console.log(selected_file.name)
 // const { dialog } = require('electron')
 // console.log(dialog.showOpenDialog({ properties: ['openFile'] }))
