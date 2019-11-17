@@ -2,27 +2,23 @@
 <html>
   <head>
     <link href="index.css" rel="stylesheet" type="text/css" />
-    <!-- <script type="text/javascript" src="index.js" type="module"></script> -->
     <title>Get Image coordinates</title>
   </head>
   <body>
     <form name="pointform" method="post">
       <div id="images" style="display: flex; flex-direction:row;">
         <a id="hidden"></a>
-        <script language="JavaScript" type="text/javascript">
-          // var imgs = ["url('data/01KEAX20150801_112031_V06_Reflectivity.png')",
-          // "url('data/01KAKQ20150801_101421_V06_Rho_HV.png')"];
-          //generate_images(imgs)
-        </script>
       </div>
     </form>
 
     <div>
       <a id="clear-button" class="next">Clear</a>
+      <a id="flag-button" class="next">Flag</a>
     </div>
     <div>
       <a id="prev-button" class="previous">&#8249; Previous</a>
       <a id="next-button" class="next">Next &#8250;</a>
     </div>
+    <ul id="mark-list"></ul>
   </body>
 </html>
