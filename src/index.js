@@ -106,7 +106,7 @@ function selectFolder(e) {
   var theFiles = e.target.files
   image_path = theFiles[0].path
   readAWSFiles()
-  fs.writeFile(image_path + '/output.csv', 'x,y,flag\n', err => {
-    if (err) throw err
-  })
+  // fs.writeFile(image_path + '/output.csv', 'x,y,flag\n', err => {
+  //   if (err) throw err
+  // })
 }

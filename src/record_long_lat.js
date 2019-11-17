@@ -19,7 +19,7 @@ export function clear_marks() {
   }
 }
 
-export function mark(event) {
+export function mark(event, name) {
   //get the position
   let pos_x = event.offsetX ? event.offsetX : event.pageX
   let pos_y = event.offsetY ? event.offsetY : event.pageY
@@ -32,14 +32,14 @@ export function mark(event) {
   document.getElementById('mark-list').appendChild(marker)
 
   // write to csv
-  let data = [pos_x, pos_y, flag_bool]
+  let data = [name, pos_x, pos_y, flag_bool]
 
   fs.appendFile(image_path + '/output.csv', data + '\n', err => {
     if (err) throw err
   })
   console.log(data)
 
-  return [pos_x, pos_y]
+  return data
 }
 
 export function refresh_page(imgs) {
@@ -62,7 +62,9 @@ export function generate_images(imgs) {
       // and create a new image on the page for each one
       let image = document.createElement('img')
       image.setAttribute('class', 'image')
-      image.onclick = mark
+      image.onclick = function(e) {
+        mark(e, `file://${imgs[j]}`)
+      }
       image.src = `file://${imgs[j]}`
       image.style.backgroundRepeat = 'no-repeat'
       image.style.minWidth = '450px'
