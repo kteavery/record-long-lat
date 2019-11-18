@@ -1,6 +1,7 @@
 import { fs } from './system/fs'
 import { remote } from './system/remote'
 import { clear_marks, refresh_page, flag_image } from './record_long_lat'
+import awsNames from './aws_names.json'
 
 import 'regenerator-runtime'
 
@@ -26,10 +27,7 @@ const pics = []
 let i = -1
 
 async function readAWSFiles() {
-  const aws_names = (await fs.readFile(
-    remote.process.cwd() + '/aws_names.csv',
-    'utf8',
-  )).split(/\r?,\n/)
+  const aws_names = awsNames //(await fs.readFile(aws, 'utf8')).split(/\r?,\n/)
 
   for (let k = 0; k < aws_names.length; k++) {
     const fields = []
