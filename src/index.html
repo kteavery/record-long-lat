@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <!-- <link href="./index.css" rel="stylesheet" type="text/css" /> -->
+    <title>Get Image coordinates</title>
+    <style>
+      a {
+        text-decoration: none;
+        display: inline-block;
+        padding: 8px 16px;
+        margin-top: 30px;
+      }
+
+      a:hover {
+        background-color: #ddd;
+        color: black;
+      }
+
+      .previous {
+        background-color: #f1f1f1;
+        color: black;
+        font-size: 16px;
+        font-family: sans-serif;
+        padding: 10px 16px;
+      }
+
+      .next {
+        background-color: #4caf50;
+        color: white;
+        font-size: 16px;
+        font-family: sans-serif;
+        padding: 10px 16px;
+      }
+
+      .round {
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="open-button" class="next" margin-bottom="25px">
+      Choose directory
+    </button>
+    <input
+      id="choose-directory"
+      type="file"
+      style="display: none"
+      webkitdirectory
+    />
+    <input id="save-file" type="file" style="display: none" />
+
+    <form name="pointform" method="post">
+      <div id="images" style="display: flex; flex-direction:row;">
+        <a id="hidden"></a>
+      </div>
+    </form>
+
+    <div>
+      <a id="clear-button" class="next">Clear</a>
+      <a id="flag-button" class="next">Flag</a>
+    </div>
+    <div>
+      <a id="prev-button" class="previous">&#8249; Previous</a>
+      <a id="next-button" class="next">Next &#8250;</a>
+    </div>
+    <ul id="mark-list" style="list-style-type:none" />
+  </body>
+</html>
