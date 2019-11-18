@@ -13,3 +13,6 @@ Use the **next** and **previous** buttons to navigate forwards and backwards. Th
 The **clear** button clears all labels for a given set of images. 
 
 The **flag** button flags a set of images for further review. Flag a set of images if you are very unsure where the roost is. 
+
+## Notes
+The data will be written to output.csv, which is located in the data directory you selected earlier. 
