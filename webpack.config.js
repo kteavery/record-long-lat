@@ -5,7 +5,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CompressionPlugin = require('compression-webpack-plugin')
 const VisualizerPlugin = require('webpack-visualizer-plugin')
-const AnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 function clean(...entries) {
   return entries.filter(entry => !!entry && entry !== true)
@@ -93,7 +92,6 @@ function createConfig(production) {
           test: production ? /\.(js|css)$/ : '__disabled__',
         }),
       production && new VisualizerPlugin(),
-      production && new AnalyzerPlugin(),
       new HtmlWebpackPlugin({
         template: join(sourcePath, 'index.html'),
       }),

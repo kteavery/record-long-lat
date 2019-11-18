@@ -10,7 +10,8 @@
     "test": "jest",
     "build": "webpack --config webpack.config.js --env prod",
     "package": "electron-packager . --out=dist",
-    "dev": "webpack-dev-server --hot --inline"
+    "dev": "webpack-dev-server --hot --inline",
+    "prod-build": "yarn build && yarn package --overwrite"
   },
   "keywords": [],
   "author": "Kate Avery",
@@ -34,7 +35,6 @@
   },
   "dependencies": {
     "classnames": "2.2.6",
-    "electron": "6.0.10",
     "history": "4.9.0",
     "react": "16.8.6",
     "react-dom": "16.8.6",
@@ -57,6 +57,7 @@
     "compression-webpack-plugin": "2.0.0",
     "css-loader": "2.1.0",
     "electron-packager": "14.0.6",
+    "electron": "6.0.10",
     "eslint": "6.4.0",
     "eslint-config-prettier": "6.3.0",
     "eslint-config-react": "1.1.7",
