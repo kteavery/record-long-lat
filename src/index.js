@@ -1,11 +1,13 @@
 import { fs } from './system/fs'
-import { remote } from './system/remote'
 import { clear_marks, refresh_page, flag_image } from './record_long_lat'
-import awsNames from './aws_names.json'
+import names from './aws_names.json'
 
 import 'regenerator-runtime'
 
 export let image_path = ''
+
+const pics = []
+let i = -1
 
 tab()
 open_directory()
@@ -17,17 +19,20 @@ let prev = document.getElementById('prev-button')
 prev.onclick = prev_refresh
 
 let clear = document.getElementById('clear-button')
-clear.onclick = clear_marks
+clear.onclick = function() {
+  if (i >= 0) {
+    var delete_name = pics[i][0]
+      .substring(pics[i][0].lastIndexOf('/') + 1)
+      .slice(2, 25)
+    clear_marks(delete_name)
+  }
+}
 
 let flag = document.getElementById('flag-button')
 flag.onclick = flag_image
 
-const pics = []
-
-let i = -1
-
-async function readAWSFiles() {
-  const aws_names = awsNames //(await fs.readFile(aws, 'utf8')).split(/\r?,\n/)
+async function read_aws_files() {
+  const aws_names = names
 
   for (let k = 0; k < aws_names.length; k++) {
     const fields = []
@@ -96,15 +101,12 @@ function open_directory() {
   document.getElementById('open-button').addEventListener('click', _ => {
     let dir = document.getElementById('choose-directory')
     dir.click()
-    dir.onchange = selectFolder
+    dir.onchange = select_folder
   })
 }
 
-function selectFolder(e) {
+function select_folder(e) {
   var theFiles = e.target.files
   image_path = theFiles[0].path
-  readAWSFiles()
-  // fs.writeFile(image_path + '/output.csv', 'x,y,flag\n', err => {
-  //   if (err) throw err
-  // })
+  read_aws_files()
 }

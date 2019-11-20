@@ -11,12 +11,24 @@ export function flag_image() {
   }
 }
 
-export function clear_marks() {
+export function clear_marks(name) {
   //remove previous markers
   let prev_markers = document.getElementsByClassName('marker')
   while (prev_markers.length > 0) {
     prev_markers[0].parentNode.removeChild(prev_markers[0])
   }
+
+  fs.readFile(image_path + '/output.csv', 'utf8', function(err, data) {
+    if (err) throw err
+    // Get array of comma separated lines
+    let lines = data.split('\n')
+    // Turn that into a data structure we can parse (array of arrays)
+    let linesArr = lines.map(line => line.split(','))
+    // Use filter to find the name then return only those that don't match
+    // Join then into a string with new lines
+    let output = linesArr.filter(line => line[0] !== name).join('\n')
+    fs.writeFile(image_path + '/output.csv', output)
+  })
 }
 
 export function mark(event, name) {
@@ -32,7 +44,12 @@ export function mark(event, name) {
   document.getElementById('mark-list').appendChild(marker)
 
   // write to csv
-  let data = [name, pos_x, pos_y, flag_bool]
+  let data = [
+    name.substring(name.lastIndexOf('/') + 1).slice(2, 25),
+    pos_x,
+    pos_y,
+    flag_bool,
+  ]
 
   fs.appendFile(image_path + '/output.csv', data + '\n', err => {
     if (err) throw err
